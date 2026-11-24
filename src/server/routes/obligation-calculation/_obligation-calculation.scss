@@ -1,0 +1,40 @@
+@use "govuk-frontend" as *;
+
+// TEMPORARY. Delete this file with src/server/routes/obligation-calculation.
+
+.obligation-calculation-temporary-banner {
+  margin-bottom: govuk-spacing(6);
+  padding: govuk-spacing(4);
+  border: 5px solid govuk-colour("black");
+  background-color: govuk-colour("yellow");
+  color: govuk-colour("black");
+}
+
+.obligation-calculation-temporary-banner__label {
+  margin: 0;
+  @include govuk-font(48, $weight: bold);
+}
+
+.obligation-calculation-temporary-banner__detail {
+  margin-top: govuk-spacing(2);
+  margin-bottom: 0;
+  max-width: 40em;
+  @include govuk-font(19);
+}
+
+.obligation-calculation-examples {
+  gap: govuk-spacing(3);
+}
+
+.obligation-calculation-json {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.obligation-calculation-scroll-target {
+  scroll-margin-top: govuk-spacing(4);
+}
