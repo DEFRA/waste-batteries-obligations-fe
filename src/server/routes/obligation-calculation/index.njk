@@ -1,0 +1,80 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  <div class="obligation-calculation-temporary-banner" role="region" aria-label="{{ temporaryLabel }}">
+    <p class="obligation-calculation-temporary-banner__label">{{ temporaryLabel }}</p>
+    <p class="obligation-calculation-temporary-banner__detail">This screen is only for trying the obligation calculations API. It is not part of the live service and will be removed prior to go live.</p>
+  </div>
+
+  <div class="govuk-grid-row app-heading">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ heading }}</h1>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <p class="govuk-body">This page sends the JSON below to the obligation calculations API and shows the status code and body. The API reads schemeOrgId and compliancePeriodYear as query parameters and builds the sample calculation. It does not use a request body. Update json replaces the request with a new scheme id for 2026. Create stores that calculation. Add version stores a newer version for the same scheme and year. Use both to check the calculation written to the database.</p>
+
+      {% if errorMessage %}
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+          <div role="alert">
+            <h2 class="govuk-error-summary__title">There is a problem</h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                <li><a href="#calculationJson">{{ errorMessage }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <form method="post" action="/obligation-calculation" novalidate{% if scrollTo %} data-scroll-to="{{ scrollTo }}"{% endif %}>
+        <input type="hidden" name="crumb" value="{{ crumb }}">
+        {% if response %}
+          <input type="hidden" name="responseStatusCode" value="{{ response.statusCode }}">
+          <input type="hidden" name="responseStatusText" value="{{ response.statusText }}">
+          <input type="hidden" name="responseBody" value="{{ response.body }}">
+        {% endif %}
+
+        <div class="govuk-form-group{% if errorMessage %} govuk-form-group--error{% endif %}">
+          <label class="govuk-label govuk-label--m obligation-calculation-scroll-target" id="request-json" for="calculationJson">Request JSON</label>
+          {% if errorMessage %}
+            <p id="calculationJson-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}
+            </p>
+          {% endif %}
+          <textarea class="govuk-textarea{% if errorMessage %} govuk-textarea--error{% endif %} obligation-calculation-json" id="calculationJson" name="calculationJson" rows="12" spellcheck="false"{% if errorMessage %} aria-describedby="calculationJson-error"{% endif %}>{{ calculationJson }}</textarea>
+        </div>
+
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="exampleKind">Example</label>
+          <div class="govuk-button-group obligation-calculation-examples">
+            <select class="govuk-select" id="exampleKind" name="exampleKind">
+              {% for kind in exampleKinds %}
+                {% if kind.separator %}
+                  <option disabled>{{ kind.text }}</option>
+                {% else %}
+                  <option value="{{ kind.value }}"{% if kind.value == exampleKind %} selected{% endif %}>{{ kind.text }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <button class="govuk-button govuk-button--secondary" data-module="govuk-button" name="intent" value="update-json" formaction="/obligation-calculation#request-json">Update json</button>
+          </div>
+        </div>
+
+        <div class="govuk-button-group">
+          <button class="govuk-button obligation-calculation-scroll-target" data-module="govuk-button" id="create-calculation" name="intent" value="post" formaction="/obligation-calculation#create-calculation">Create</button>
+          <button class="govuk-button obligation-calculation-scroll-target" data-module="govuk-button" id="add-version" name="intent" value="patch" formaction="/obligation-calculation#add-version">Add version</button>
+        </div>
+      </form>
+
+      {% if response %}
+        <h2 class="govuk-heading-m">Response</h2>
+        <p class="govuk-body">Status code <strong>{{ response.statusCode }} {{ response.statusText }}</strong></p>
+        <pre class="obligation-calculation-json" id="response-body">{{ response.body }}</pre>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
