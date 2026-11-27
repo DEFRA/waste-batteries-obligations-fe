@@ -32,7 +32,7 @@ export const config = convict({
   port: {
     doc: 'The port to bind.',
     format: 'port',
-    default: 3000,
+    default: 3002,
     env: 'PORT'
   },
   staticCacheTimeout: {
@@ -114,7 +114,7 @@ export const config = convict({
   wasteBatteriesObligationsBeUrl: {
     doc: 'Waste batteries obligations backend URL',
     format: 'url',
-    default: 'http://localhost:3001',
+    default: 'http://localhost:8087',
     env: 'WASTE_BATTERIES_OBLIGATIONS_BE_URL'
   },
   isSecureContextEnabled: {
@@ -218,7 +218,7 @@ export const config = convict({
     callbackBaseUrl: {
       doc: 'Public base URL used to build both auth callback URLs, no trailing slash',
       format: String,
-      default: 'http://localhost:3000',
+      default: 'http://localhost:3002',
       env: 'DEFRA_ID_CALLBACK_BASE_URL'
     }
   },

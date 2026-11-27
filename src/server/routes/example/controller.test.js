@@ -71,7 +71,7 @@ describe('#exampleController', () => {
     expect(result).toContain('Saved text')
     expect(result).toContain('name="crumb"')
     expect(fetchMock).toHaveBeenCalledWith(
-      new URL('/example', 'http://localhost:3001'),
+      new URL('/example', 'http://localhost:8087'),
       {
         headers: {
           accept: 'application/json',
@@ -135,7 +135,7 @@ describe('#exampleController', () => {
     expect(statusCode).toBe(302)
     expect(headers.location).toBe('/example')
     expect(fetchMock).toHaveBeenLastCalledWith(
-      new URL('/example', 'http://localhost:3001'),
+      new URL('/example', 'http://localhost:8087'),
       {
         method: 'POST',
         headers: {

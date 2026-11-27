@@ -122,7 +122,7 @@ describe('auth routes', () => {
       )
       expect(location.searchParams.get('id_token_hint')).toBe('id-token-value')
       expect(location.searchParams.get('post_logout_redirect_uri')).toBe(
-        'http://localhost:3000/auth/sign-out-oidc'
+        'http://localhost:3002/auth/sign-out-oidc'
       )
       expect(location.searchParams.get('state')).toBeTruthy()
 
